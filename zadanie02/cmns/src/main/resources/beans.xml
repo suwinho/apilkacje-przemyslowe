@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="machines" class="pl.edu.ug.cmms.SampleData" factory-method="machines"/>
+
+    <bean id="workOrders" class="pl.edu.ug.cmms.SampleData" factory-method="workOrders"/>
+
+    <bean id="reportCalculator" class="pl.edu.ug.cmms.ReportCalculator">
+        <constructor-arg index="0" ref="machines"/>
+        <constructor-arg index="1" ref="workOrders"/>
+        <constructor-arg index="2" value="${cmms.report.top}"/>
+    </bean>
+
+    <bean id="reportPrinter" class="pl.edu.ug.cmms.ReportPrinter">
+        <constructor-arg>
+            <util:constant static-field="java.lang.System.out"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="reportXmlMapper" class="pl.edu.ug.cmms.ReportXmlMapper"/>
+
+    <bean id="reportRunner" class="pl.edu.ug.cmms.ReportRunner">
+        <constructor-arg index="0" ref="reportCalculator"/>
+        <constructor-arg index="1" ref="reportPrinter"/>
+        <constructor-arg index="2" ref="reportXmlMapper"/>
+        <constructor-arg index="3" value="${cmms.report.file}"/>
+    </bean>
+</beans>
